@@ -19,7 +19,9 @@ class Interactor
     {
         $this->submission->validate();
         if ($this->submission->is_wider_than_layout())
+        {
             $this->submission->resize_to_layout();
+        }
         $this->submission->generate_background();
         $this->submission->generate_cropped_thumbnail();
         $this->submission->submit();
