@@ -46,6 +46,11 @@ class Submission extends Data\Image
 
     public function generate_background()
     {
-        $this->graphic->blur($this->file->tmp_name, $this->file->tmp_name.'.blur');
+        $this->graphic->blur($this->file->tmp_name, 978, $this->file->tmp_name.'.blur');
+    }
+
+    public function generate_cropped_thumbnail()
+    {
+        $this->graphic->crop_thumbnail($this->file->tmp_name, 222, $this->file->tmp_name.'.thumbnail');
     }
 }

@@ -75,7 +75,13 @@ class Submission extends ObjectBehavior
 
     function it_can_generate_a_blurred_image_background($graphic)
     {
-        $graphic->blur('tmp_Foo', 'tmp_Foo.blur')->shouldBeCalled();
+        $graphic->blur('tmp_Foo', 978, 'tmp_Foo.blur')->shouldBeCalled();
         $this->generate_background();
+    }
+
+    function it_generates_a_cropped_thumbnail($graphic)
+    {
+        $graphic->crop_thumbnail('tmp_Foo', 222, 'tmp_Foo.thumbnail')->shouldBeCalled();
+        $this->generate_cropped_thumbnail();
     }
 }
