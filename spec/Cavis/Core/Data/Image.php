@@ -11,6 +11,11 @@ class Image extends ObjectBehavior
         $this->shouldHaveType('Cavis\Core\Data\Image');
     }
 
+    function it_should_have_an_id()
+    {
+        $this->id->shouldBe(NULL);
+    }
+
     function it_should_have_a_name()
     {
         $this->name->shouldBe(NULL);

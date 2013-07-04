@@ -8,6 +8,7 @@ namespace Cavis\Core\Data;
 
 class Image
 {
+    public $id;
     public $name;
     public $file;
 }
