@@ -72,4 +72,10 @@ class Submission extends ObjectBehavior
         $graphic->resize_to_width('tmp_Foo', 474)->shouldBeCalled();
         $this->resize_to_layout();
     }
+
+    function it_can_generate_a_blurred_image_background($graphic)
+    {
+        $graphic->blur('tmp_Foo', 'tmp_Foo.blur')->shouldBeCalled();
+        $this->generate_background();
+    }
 }

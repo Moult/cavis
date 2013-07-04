@@ -43,4 +43,9 @@ class Submission extends Data\Image
     {
         $this->graphic->resize_to_width($this->file->tmp_name, 474);
     }
+
+    public function generate_background()
+    {
+        $this->graphic->blur($this->file->tmp_name, $this->file->tmp_name.'.blur');
+    }
 }
