@@ -13,6 +13,8 @@ interface Graphic
      *
      * Example:
      * $image->get_width('/path/to/file.jpg');
+     *
+     * @return int
      */
     public function get_width($file_path);
 }
