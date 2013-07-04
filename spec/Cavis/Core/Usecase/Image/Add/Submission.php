@@ -11,15 +11,14 @@ class Submission extends ObjectBehavior
      * @param Cavis\Core\Data\File $file
      * @param Cavis\Core\Usecase\Image\Add\Repository $repository
      * @param Cavis\Core\Tool\Graphic $graphic
-     * @param Cavis\Core\Tool\Filesystem $filesystem
      * @param Cavis\Core\Tool\Validation $validation
      */
-    function let($image, $file, $repository, $graphic, $filesystem, $validation)
+    function let($image, $file, $repository, $graphic, $validation)
     {
         $file->tmp_name = 'tmp_Foo';
         $image->name = 'Foo';
         $image->file = $file;
-        $this->beConstructedWith($image, $repository, $graphic, $filesystem, $validation);
+        $this->beConstructedWith($image, $repository, $graphic, $validation);
         $this->name->shouldBe('Foo');
         $this->file->shouldBe($file);
     }
@@ -87,12 +86,12 @@ class Submission extends ObjectBehavior
         $this->generate_cropped_thumbnail();
     }
 
-    function it_submits_the_proposal($file, $repository, $filesystem)
+    function it_submits_the_proposal($file, $repository)
     {
-        $filesystem->save_upload($file)->shouldBeCalled()->willReturn('/path/to/upload/file.png');
-        $filesystem->move('tmp_Foo.blur', '/path/to/upload/file.png.blur')->shouldBeCalled();
-        $filesystem->move('tmp_Foo.thumb', '/path/to/upload/file.png.thumb')->shouldBeCalled();
-        $repository->save('Foo', '/path/to/upload/file.png')->shouldBeCalled()->willReturn(42);
+        $repository->save_file($file)->shouldBeCalled()->willReturn('/path/to/upload/file.png');
+        $repository->save_generated_file('tmp_Foo.blur')->shouldBeCalled();
+        $repository->save_generated_file('tmp_Foo.thumb')->shouldBeCalled();
+        $repository->save_record('Foo', '/path/to/upload/file.png')->shouldBeCalled()->willReturn(42);
         $this->submit()->shouldReturn(42);
     }
 }

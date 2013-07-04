@@ -11,13 +11,12 @@ use Cavis\Core\Exception;
 
 class Submission extends Data\Image
 {
-    public function __construct(Data\Image $image, Repository $repository, Tool\Graphic $graphic, Tool\Filesystem $filesystem, Tool\Validation $validation)
+    public function __construct(Data\Image $image, Repository $repository, Tool\Graphic $graphic, Tool\Validation $validation)
     {
         $this->name = $image->name;
         $this->file = $image->file;
         $this->repository = $repository;
         $this->graphic = $graphic;
-        $this->filesystem = $filesystem;
         $this->validation = $validation;
     }
 
@@ -58,9 +57,9 @@ class Submission extends Data\Image
 
     public function submit()
     {
-        $file_path = $this->filesystem->save_upload($this->file);
-        $this->filesystem->move($this->file->tmp_name.'.blur', $file_path.'.blur');
-        $this->filesystem->move($this->file->tmp_name.'.thumb', $file_path.'.thumb');
-        return $this->repository->save($this->name, $file_path);
+        $file_path = $this->repository->save_file($this->file);
+        $this->repository->save_generated_file($this->file->tmp_name.'.blur');
+        $this->repository->save_generated_file($this->file->tmp_name.'.thumb');
+        return $this->repository->save_record($this->name, $file_path);
     }
 }

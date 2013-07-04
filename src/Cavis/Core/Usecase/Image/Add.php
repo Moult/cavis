@@ -34,7 +34,6 @@ class Add
             $this->data['image'],
             $this->repositories['image_add'],
             $this->tools['graphic'],
-            $this->tools['filesystem'],
             $this->tools['validation']
         );
     }
