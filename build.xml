@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Eadrax" default="main">
+<project name="cavis" default="main">
     <property name="basedir" value="${project.basedir}" />
     <property name="appdir" value="${basedir}/src" />
     <property name="builddir" value="${basedir}/build" />
@@ -71,7 +71,7 @@
     </target>
 
     <target name="phpdoc2" description="Run phpDocumentor2">
-        <exec command="phpdoc --title=Eadrax -t ${basedir}/docs/ -d ${appdir}/" passthru="true" />
+        <exec command="phpdoc --title=cavis -t ${basedir}/docs/ -d ${appdir}/" passthru="true" />
     </target>
 
     <target name="main" description="Run tests - minimum requirement for a push">
