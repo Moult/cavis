@@ -38,4 +38,9 @@ class Submission extends Data\Image
     {
         return ($this->graphic->get_width($this->file->tmp_name) > 474);
     }
+
+    public function resize_to_layout()
+    {
+        $this->graphic->resize_to_width($this->file->tmp_name, 474);
+    }
 }

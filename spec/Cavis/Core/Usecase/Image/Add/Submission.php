@@ -66,4 +66,10 @@ class Submission extends ObjectBehavior
         $graphic->get_width('tmp_Foo')->shouldBeCalled()->willReturn(475);
         $this->is_wider_than_layout()->shouldReturn(TRUE);
     }
+
+    function it_can_resize_image_to_layout_width($graphic)
+    {
+        $graphic->resize_to_width('tmp_Foo', 474)->shouldBeCalled();
+        $this->resize_to_layout();
+    }
 }
