@@ -24,6 +24,6 @@ class Interactor
         }
         $this->submission->generate_background();
         $this->submission->generate_cropped_thumbnail();
-        $this->submission->submit();
+        return $this->submission->submit();
     }
 }

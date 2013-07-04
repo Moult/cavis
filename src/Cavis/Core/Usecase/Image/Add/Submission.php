@@ -61,6 +61,6 @@ class Submission extends Data\Image
         $file_path = $this->filesystem->save_upload($this->file);
         $this->filesystem->move($this->file->tmp_name.'.blur', $file_path.'.blur');
         $this->filesystem->move($this->file->tmp_name.'.thumb', $file_path.'.thumb');
-        $this->repository->save($this->name, $file_path);
+        return $this->repository->save($this->name, $file_path);
     }
 }
