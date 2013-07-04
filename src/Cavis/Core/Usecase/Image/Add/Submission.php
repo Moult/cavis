@@ -11,10 +11,11 @@ use Cavis\Core\Exception;
 
 class Submission extends Data\Image
 {
-    public function __construct(Data\Image $image, Tool\Validation $validation)
+    public function __construct(Data\Image $image, Tool\Graphic $graphic, Tool\Validation $validation)
     {
         $this->name = $image->name;
         $this->file = $image->file;
+        $this->graphic = $graphic;
         $this->validation = $validation;
     }
 
@@ -31,5 +32,10 @@ class Submission extends Data\Image
         $this->validation->rule('file', 'upload_size', '1M');
         if ( ! $this->validation->check())
             throw new Exception\Validation($this->validation->errors());
+    }
+
+    public function is_wider_than_layout()
+    {
+        return ($this->graphic->get_width($this->file->tmp_name) > 474);
     }
 }
