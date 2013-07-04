@@ -39,6 +39,6 @@ class Add extends ObjectBehavior
 
     function it_should_fetch_the_interactor()
     {
-        $this->fetch();
+        $this->fetch()->shouldHaveType('Cavis\Core\Usecase\Image\Add\Interactor');
     }
 }
