@@ -25,4 +25,9 @@ class Comment extends ObjectBehavior
     {
         $this->number_of_votes->shouldBe(NULL);
     }
+
+    function it_should_be_part_of_an_image()
+    {
+        $this->image->shouldBe(NULL);
+    }
 }

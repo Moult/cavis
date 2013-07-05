@@ -11,4 +11,5 @@ class Comment
     public $id;
     public $message;
     public $number_of_votes;
+    public $image;
 }
