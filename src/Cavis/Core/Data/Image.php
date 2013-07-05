@@ -11,4 +11,6 @@ class Image
     public $id;
     public $name;
     public $file;
+    public $comments;
+    public $number_of_votes;
 }

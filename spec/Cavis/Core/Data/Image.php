@@ -25,4 +25,14 @@ class Image extends ObjectBehavior
     {
         $this->file->shouldBe(NULL);
     }
+
+    function it_should_have_comments()
+    {
+        $this->comments->shouldBe(NULL);
+    }
+
+    function it_should_have_a_number_of_votes()
+    {
+        $this->number_of_votes->shouldBe(NULL);
+    }
 }
