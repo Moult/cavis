@@ -15,6 +15,8 @@ interface Formatter
      * $data = Cavis\Core\Data\User;
      * $formatter->setup($data);
      *
+     * @param Data $data A data object
+     *
      * @return void
      */
     public function setup($data);
@@ -25,7 +27,9 @@ interface Formatter
      * Example:
      * $formatter->format('Email_Notification');
      *
-     * @return void
+     * @param string $template The name of the formatting template to use
+     *
+     * @return string
      */
     public function format($template);
 }

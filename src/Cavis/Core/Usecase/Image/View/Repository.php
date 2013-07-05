@@ -15,7 +15,9 @@ interface Repository
      * $image = $repository->get_all_image_data(42);
      * var_dump($image->comments); # Show all comment data
      *
+     * @param int $image_id The unique ID associated with the image
+     *
      * @return Cavis\Core\Data\Image
      */
-    public function get_all_image_data($id);
+    public function get_all_image_data($image_id);
 }

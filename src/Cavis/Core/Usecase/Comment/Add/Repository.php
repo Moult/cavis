@@ -14,12 +14,17 @@ interface Repository
      * Example:
      * $repository->save_comment('Hello', 42);
      *
+     * @param string $message  The comment message
+     * @param int    $image_id The unique ID associated with the image
+     *
      * @return void
      */
     public function save_comment($message, $image_id);
 
     /**
      * Checks whether or not an image exists
+     *
+     * @param int $image_id The unique ID associated with the image
      *
      * @return bool TRUE is image exists, else FALSE
      */

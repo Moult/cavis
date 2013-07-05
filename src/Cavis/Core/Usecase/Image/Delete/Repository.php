@@ -14,7 +14,9 @@ interface Repository
      * Example:
      * $repository->delete(42);
      *
+     * @param int $image_id The unique ID associated with the image
+     *
      * @return void
      */
-    public function delete($record_id);
+    public function delete($image_id);
 }

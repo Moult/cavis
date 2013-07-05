@@ -15,6 +15,9 @@ interface Repository
      * Example:
      * $repository->save('Foo', '/path/to/file.png');
      *
+     * @param string $submission_name The name of the image submission
+     * @param string $submission_file The path to the image submission file
+     *
      * @return int The unique id of the saved record
      */
     public function save_record($submission_name, $submission_file);
@@ -27,6 +30,8 @@ interface Repository
      * Example:
      * $repository->save_file($file);
      *
+     * @param Data\File $file The file data to save
+     *
      * @return mixed string bool full path to uploaded file or FALSE if failed
      */
     public function save_file(Data\File $file);
@@ -36,6 +41,8 @@ interface Repository
      *
      * Example:
      * $repository->save_generated_file('/path/to/file.png');
+     *
+     * @param string $file_path The path to the generated file.
      *
      * @return void
      */
