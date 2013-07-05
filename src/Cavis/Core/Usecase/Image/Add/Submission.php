@@ -11,48 +11,54 @@ use Cavis\Core\Exception;
 
 class Submission extends Data\Image
 {
-    public function __construct(Data\Image $image, Repository $repository, Tool\Graphic $graphic, Tool\Validation $validation)
+    public function __construct(Data\Image $image, Repository $repository, Tool\Photoshopper $photoshopper, Tool\Validator $validator)
     {
         $this->name = $image->name;
         $this->file = $image->file;
         $this->repository = $repository;
-        $this->graphic = $graphic;
-        $this->validation = $validation;
+        $this->photoshopper = $photoshopper;
+        $this->validator = $validator;
     }
 
     public function validate()
     {
-        $this->validation->setup(array(
+        $this->validator->setup(array(
             'name' => $this->name,
             'file' => $this->file,
         ));
-        $this->validation->rule('name', 'not_empty');
-        $this->validation->rule('name', 'max_length', 30);
-        $this->validation->rule('file', 'upload_valid');
-        $this->validation->rule('file', 'upload_type', array('jpg', 'png', 'jpeg'));
-        $this->validation->rule('file', 'upload_size', '1M');
-        if ( ! $this->validation->check())
-            throw new Exception\Validation($this->validation->errors());
+        $this->validator->rule('name', 'not_empty');
+        $this->validator->rule('name', 'max_length', 30);
+        $this->validator->rule('file', 'upload_valid');
+        $this->validator->rule('file', 'upload_type', array('jpg', 'png', 'jpeg'));
+        $this->validator->rule('file', 'upload_size', '1M');
+        if ( ! $this->validator->check())
+            throw new Exception\Validation($this->validator->errors());
     }
 
     public function is_wider_than_layout()
     {
-        return ($this->graphic->get_width($this->file->tmp_name) > 474);
+        $this->photoshopper->setup($this->file->tmp_name);
+        return ($this->photoshopper->get_width() > 474);
     }
 
     public function resize_to_layout()
     {
-        $this->graphic->resize_to_width($this->file->tmp_name, 474);
+        $this->photoshopper->setup($this->file->tmp_name);
+        $this->photoshopper->resize_to_width(474);
     }
 
     public function generate_background()
     {
-        $this->graphic->blur($this->file->tmp_name, 978, $this->file->tmp_name.'.blur');
+        $this->photoshopper->setup($this->file->tmp_name, $this->file->tmp_name.'.blur');
+        $this->photoshopper->resize_to_width(978);
+        $this->photoshopper->setup($this->file->tmp_name.'.blur');
+        $this->photoshopper->blur(10);
     }
 
-    public function generate_cropped_thumbnail()
+    public function generate_thumbnail()
     {
-        $this->graphic->crop_thumbnail($this->file->tmp_name, 222, $this->file->tmp_name.'.thumb');
+        $this->photoshopper->setup($this->file->tmp_name, $this->file->tmp_name.'.thumb');
+        $this->photoshopper->resize_to_width(222);
     }
 
     public function submit()

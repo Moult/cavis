@@ -9,4 +9,5 @@ namespace Cavis\Core\Data;
 class User
 {
     public $ip;
+    public $email;
 }

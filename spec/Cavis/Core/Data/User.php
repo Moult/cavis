@@ -15,4 +15,9 @@ class User extends ObjectBehavior
     {
         $this->ip->shouldBe(NULL);
     }
+
+    function it_should_have_an_email()
+    {
+        $this->email->shouldBe(NULL);
+    }
 }
