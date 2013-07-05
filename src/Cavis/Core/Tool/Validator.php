@@ -6,13 +6,12 @@
 
 namespace Cavis\Core\Tool;
 
-interface Validation
+interface Validator
 {
     /**
      * Loads in the input data that you want to perform validation checks on.
      *
      * Example:
-     * $validation = new Validation_Class;
      * $validation->setup($_POST);
      *
      * @param array $input_data
@@ -30,6 +29,7 @@ interface Validation
      * @param string $rule not_empty - passes if there is a value
      *                     max_length - passes if chars are less than $arg
      *                     ip - passes if valid ip address
+     *                     email - passes if valid email address
      *                     upload_valid - passes if upload data is valid
      *                     upload_type - passes if upload data fits filetypes in $arg array
      *                     upload_size - passes if upload data is less than size in $arg string (eg: 1M, 2KiB, 1GB)

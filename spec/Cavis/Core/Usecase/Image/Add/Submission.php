@@ -10,15 +10,15 @@ class Submission extends ObjectBehavior
      * @param Cavis\Core\Data\Image $image
      * @param Cavis\Core\Data\File $file
      * @param Cavis\Core\Usecase\Image\Add\Repository $repository
-     * @param Cavis\Core\Tool\Graphic $graphic
-     * @param Cavis\Core\Tool\Validation $validation
+     * @param Cavis\Core\Tool\Photoshopper $photoshopper
+     * @param Cavis\Core\Tool\Validator $validator
      */
-    function let($image, $file, $repository, $graphic, $validation)
+    function let($image, $file, $repository, $photoshopper, $validator)
     {
         $file->tmp_name = 'tmp_Foo';
         $image->name = 'Foo';
         $image->file = $file;
-        $this->beConstructedWith($image, $repository, $graphic, $validation);
+        $this->beConstructedWith($image, $repository, $photoshopper, $validator);
         $this->name->shouldBe('Foo');
         $this->file->shouldBe($file);
     }
@@ -33,57 +33,64 @@ class Submission extends ObjectBehavior
         $this->shouldHaveType('Cavis\Core\Data\Image');
     }
 
-    function it_should_validate_the_submission($file, $validation)
+    function it_should_validate_the_submission($file, $validator)
     {
-        $validation->setup(array(
+        $validator->setup(array(
             'name' => 'Foo',
             'file' => $file,
         ))->shouldBeCalled();
-        $validation->rule('name', 'not_empty')->shouldBeCalled();
-        $validation->rule('name', 'max_length', 30)->shouldBeCalled();
-        $validation->rule('file', 'upload_valid')->shouldBeCalled();
-        $validation->rule('file', 'upload_type', array('jpg', 'png', 'jpeg'))->shouldBeCalled();
-        $validation->rule('file', 'upload_size', '1M')->shouldBeCalled();
-        $validation->check()->shouldBeCalled()->willReturn(TRUE);
+        $validator->rule('name', 'not_empty')->shouldBeCalled();
+        $validator->rule('name', 'max_length', 30)->shouldBeCalled();
+        $validator->rule('file', 'upload_valid')->shouldBeCalled();
+        $validator->rule('file', 'upload_type', array('jpg', 'png', 'jpeg'))->shouldBeCalled();
+        $validator->rule('file', 'upload_size', '1M')->shouldBeCalled();
+        $validator->check()->shouldBeCalled()->willReturn(TRUE);
         $this->validate();
     }
 
-    function it_should_throw_an_error_at_invalid_submissions($validation)
+    function it_should_throw_an_error_at_invalid_submissions($validator)
     {
-        $validation->check()->shouldBeCalled()->willReturn(FALSE);
-        $validation->errors()->shouldBeCalled()->willReturn(array('name', 'file'));
+        $validator->check()->shouldBeCalled()->willReturn(FALSE);
+        $validator->errors()->shouldBeCalled()->willReturn(array('name', 'file'));
         $this->shouldThrow('Cavis\Core\Exception\Validation')
             ->duringValidate();
     }
 
-    function it_checks_whether_or_not_the_image_is_wider_than_the_layout($graphic)
+    function it_checks_whether_or_not_the_image_is_wider_than_the_layout($photoshopper)
     {
-        $graphic->get_width('tmp_Foo')->shouldBeCalled()->willReturn(474);
+        $photoshopper->setup('tmp_Foo')->shouldBeCalled();
+        $photoshopper->get_width()->shouldBeCalled()->willReturn(474);
         $this->is_wider_than_layout()->shouldReturn(FALSE);
     }
 
-    function it_checks_if_the_image_is_thinner_than_the_layout($graphic)
+    function it_checks_if_the_image_is_thinner_than_the_layout($photoshopper)
     {
-        $graphic->get_width('tmp_Foo')->shouldBeCalled()->willReturn(475);
+        $photoshopper->setup('tmp_Foo')->shouldBeCalled();
+        $photoshopper->get_width()->shouldBeCalled()->willReturn(475);
         $this->is_wider_than_layout()->shouldReturn(TRUE);
     }
 
-    function it_can_resize_image_to_layout_width($graphic)
+    function it_can_resize_image_to_layout_width($photoshopper)
     {
-        $graphic->resize_to_width('tmp_Foo', 474)->shouldBeCalled();
+        $photoshopper->setup('tmp_Foo')->shouldBeCalled();
+        $photoshopper->resize_to_width(474)->shouldBeCalled();
         $this->resize_to_layout();
     }
 
-    function it_can_generate_a_blurred_image_background($graphic)
+    function it_can_generate_a_blurred_image_background($photoshopper)
     {
-        $graphic->blur('tmp_Foo', 978, 'tmp_Foo.blur')->shouldBeCalled();
+        $photoshopper->setup('tmp_Foo', 'tmp_Foo.blur')->shouldBeCalled();
+        $photoshopper->resize_to_width(978)->shouldBeCalled();
+        $photoshopper->setup('tmp_Foo.blur')->shouldBeCalled();
+        $photoshopper->blur(10)->shouldBeCalled();
         $this->generate_background();
     }
 
-    function it_generates_a_cropped_thumbnail($graphic)
+    function it_generates_a_thumbnail($photoshopper)
     {
-        $graphic->crop_thumbnail('tmp_Foo', 222, 'tmp_Foo.thumb')->shouldBeCalled();
-        $this->generate_cropped_thumbnail();
+        $photoshopper->setup('tmp_Foo', 'tmp_Foo.thumb')->shouldBeCalled();
+        $photoshopper->resize_to_width(222)->shouldBeCalled();
+        $this->generate_thumbnail();
     }
 
     function it_submits_the_proposal($file, $repository)

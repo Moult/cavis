@@ -33,8 +33,8 @@ class Add
         return new Submission(
             $this->data['image'],
             $this->repositories['image_add'],
-            $this->tools['graphic'],
-            $this->tools['validation']
+            $this->tools['photoshopper'],
+            $this->tools['validator']
         );
     }
 }

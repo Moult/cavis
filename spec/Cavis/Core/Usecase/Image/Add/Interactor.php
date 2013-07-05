@@ -25,7 +25,7 @@ class Interactor extends ObjectBehavior
         $submission->is_wider_than_layout()->shouldBeCalled()->willReturn(TRUE);
         $submission->resize_to_layout()->shouldBeCalled();
         $submission->generate_background()->shouldBeCalled();
-        $submission->generate_cropped_thumbnail()->shouldBeCalled();
+        $submission->generate_thumbnail()->shouldBeCalled();
         $submission->submit()->shouldBeCalled()->willReturn(42);
         $this->interact()->shouldReturn(42);
     }

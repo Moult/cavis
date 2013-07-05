@@ -9,11 +9,10 @@ class Add extends ObjectBehavior
     /**
      * @param Cavis\Core\Data\Image $image
      * @param Cavis\Core\Usecase\Image\Add\Repository $image_add
-     * @param Cavis\Core\Tool\Graphic $graphic
-     * @param Cavis\Core\Tool\Filesystem $filesystem
-     * @param Cavis\Core\Tool\Validation $validation
+     * @param Cavis\Core\Tool\Photoshopper $photoshopper
+     * @param Cavis\Core\Tool\Validator $validator
      */
-    function let($image, $image_add, $graphic, $filesystem, $validation)
+    function let($image, $image_add, $photoshopper, $validator)
     {
         $data = array(
             'image' => $image
@@ -24,9 +23,8 @@ class Add extends ObjectBehavior
         );
 
         $tools = array(
-            'graphic' => $graphic,
-            'filesystem' => $filesystem,
-            'validation' => $validation
+            'photoshopper' => $photoshopper,
+            'validator' => $validator
         );
 
         $this->beConstructedWith($data, $repositories, $tools);
