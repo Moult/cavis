@@ -98,7 +98,7 @@ class Submission extends ObjectBehavior
         $repository->save_file($file)->shouldBeCalled()->willReturn('/path/to/upload/file.png');
         $repository->save_generated_file('tmp_Foo.blur')->shouldBeCalled();
         $repository->save_generated_file('tmp_Foo.thumb')->shouldBeCalled();
-        $repository->save_record('Foo', '/path/to/upload/file.png')->shouldBeCalled()->willReturn(42);
+        $repository->save_image('Foo', '/path/to/upload/file.png')->shouldBeCalled()->willReturn(42);
         $this->submit()->shouldReturn(42);
     }
 }

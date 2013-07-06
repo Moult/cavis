@@ -18,9 +18,9 @@ interface Repository
      * @param string $submission_name The name of the image submission
      * @param string $submission_file The path to the image submission file
      *
-     * @return int The unique id of the saved record
+     * @return int The unique id of the saved image
      */
-    public function save_record($submission_name, $submission_file);
+    public function save_image($submission_name, $submission_file);
 
     /**
      * Saves a file.

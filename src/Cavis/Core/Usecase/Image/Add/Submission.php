@@ -66,6 +66,6 @@ class Submission extends Data\Image
         $file_path = $this->repository->save_file($this->file);
         $this->repository->save_generated_file($this->file->tmp_name.'.blur');
         $this->repository->save_generated_file($this->file->tmp_name.'.thumb');
-        return $this->repository->save_record($this->name, $file_path);
+        return $this->repository->save_image($this->name, $file_path);
     }
 }
