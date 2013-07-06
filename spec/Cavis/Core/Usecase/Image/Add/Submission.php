@@ -82,7 +82,7 @@ class Submission extends ObjectBehavior
         $photoshopper->setup('tmp_Foo', 'tmp_Foo.blur')->shouldBeCalled();
         $photoshopper->resize_to_width(978)->shouldBeCalled();
         $photoshopper->setup('tmp_Foo.blur')->shouldBeCalled();
-        $photoshopper->blur(10)->shouldBeCalled();
+        $photoshopper->gaussian_blur(10)->shouldBeCalled();
         $this->generate_background();
     }
 

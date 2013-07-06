@@ -52,7 +52,7 @@ class Submission extends Data\Image
         $this->photoshopper->setup($this->file->tmp_name, $this->file->tmp_name.'.blur');
         $this->photoshopper->resize_to_width(978);
         $this->photoshopper->setup($this->file->tmp_name.'.blur');
-        $this->photoshopper->blur(10);
+        $this->photoshopper->gaussian_blur(10);
     }
 
     public function generate_thumbnail()
