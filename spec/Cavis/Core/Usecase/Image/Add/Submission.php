@@ -15,7 +15,11 @@ class Submission extends ObjectBehavior
      */
     function let($image, $file, $repository, $photoshopper, $validator)
     {
+        $file->name = 'Foo.png';
         $file->tmp_name = 'tmp_Foo';
+        $file->mimetype = 'image/png';
+        $file->filesize_in_bytes = 42;
+        $file->error_code = 0;
         $image->name = 'Foo';
         $image->file = $file;
         $this->beConstructedWith($image, $repository, $photoshopper, $validator);
@@ -33,14 +37,21 @@ class Submission extends ObjectBehavior
         $this->shouldHaveType('Cavis\Core\Data\Image');
     }
 
-    function it_should_validate_the_submission($file, $validator)
+    function it_should_validate_the_submission($validator)
     {
         $validator->setup(array(
             'name' => 'Foo',
-            'file' => $file,
+            'file' => array(
+                'name' => 'Foo.png',
+                'tmp_name' => 'tmp_Foo',
+                'type' => 'image/png',
+                'size' => 42,
+                'error' => 0
+            ),
         ))->shouldBeCalled();
         $validator->rule('name', 'not_empty')->shouldBeCalled();
         $validator->rule('name', 'max_length', 30)->shouldBeCalled();
+        $validator->rule('file', 'not_empty')->shouldBeCalled();
         $validator->rule('file', 'upload_valid')->shouldBeCalled();
         $validator->rule('file', 'upload_type', array('jpg', 'png', 'jpeg'))->shouldBeCalled();
         $validator->rule('file', 'upload_size', '1M')->shouldBeCalled();
@@ -79,16 +90,16 @@ class Submission extends ObjectBehavior
 
     function it_can_generate_a_blurred_image_background($photoshopper)
     {
-        $photoshopper->setup('tmp_Foo', 'tmp_Foo.blur')->shouldBeCalled();
+        $photoshopper->setup('tmp_Foo', 'tmp_Foo.blur.png')->shouldBeCalled();
         $photoshopper->resize_to_width(978)->shouldBeCalled();
-        $photoshopper->setup('tmp_Foo.blur')->shouldBeCalled();
+        $photoshopper->setup('tmp_Foo.blur.png')->shouldBeCalled();
         $photoshopper->gaussian_blur(10)->shouldBeCalled();
         $this->generate_background();
     }
 
     function it_generates_a_thumbnail($photoshopper)
     {
-        $photoshopper->setup('tmp_Foo', 'tmp_Foo.thumb')->shouldBeCalled();
+        $photoshopper->setup('tmp_Foo', 'tmp_Foo.thumb.png')->shouldBeCalled();
         $photoshopper->resize_to_width(222)->shouldBeCalled();
         $this->generate_thumbnail();
     }
@@ -96,8 +107,8 @@ class Submission extends ObjectBehavior
     function it_submits_the_proposal($file, $repository)
     {
         $repository->save_file($file)->shouldBeCalled()->willReturn('/path/to/upload/file.png');
-        $repository->save_generated_file('tmp_Foo.blur')->shouldBeCalled();
-        $repository->save_generated_file('tmp_Foo.thumb')->shouldBeCalled();
+        $repository->save_generated_file('tmp_Foo.blur.png')->shouldBeCalled();
+        $repository->save_generated_file('tmp_Foo.thumb.png')->shouldBeCalled();
         $repository->save_image('Foo', '/path/to/upload/file.png')->shouldBeCalled()->willReturn(42);
         $this->submit()->shouldReturn(42);
     }

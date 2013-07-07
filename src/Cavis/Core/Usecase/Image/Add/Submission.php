@@ -24,10 +24,17 @@ class Submission extends Data\Image
     {
         $this->validator->setup(array(
             'name' => $this->name,
-            'file' => $this->file,
+            'file' => array(
+                'name' => $this->file->name,
+                'tmp_name' => $this->file->tmp_name,
+                'type' => $this->file->mimetype,
+                'size' => $this->file->filesize_in_bytes,
+                'error' => $this->file->error_code
+            ),
         ));
         $this->validator->rule('name', 'not_empty');
         $this->validator->rule('name', 'max_length', 30);
+        $this->validator->rule('file', 'not_empty');
         $this->validator->rule('file', 'upload_valid');
         $this->validator->rule('file', 'upload_type', array('jpg', 'png', 'jpeg'));
         $this->validator->rule('file', 'upload_size', '1M');
@@ -49,23 +56,23 @@ class Submission extends Data\Image
 
     public function generate_background()
     {
-        $this->photoshopper->setup($this->file->tmp_name, $this->file->tmp_name.'.blur');
+        $this->photoshopper->setup($this->file->tmp_name, $this->file->tmp_name.'.blur.png');
         $this->photoshopper->resize_to_width(978);
-        $this->photoshopper->setup($this->file->tmp_name.'.blur');
+        $this->photoshopper->setup($this->file->tmp_name.'.blur.png');
         $this->photoshopper->gaussian_blur(10);
     }
 
     public function generate_thumbnail()
     {
-        $this->photoshopper->setup($this->file->tmp_name, $this->file->tmp_name.'.thumb');
+        $this->photoshopper->setup($this->file->tmp_name, $this->file->tmp_name.'.thumb.png');
         $this->photoshopper->resize_to_width(222);
     }
 
     public function submit()
     {
         $file_path = $this->repository->save_file($this->file);
-        $this->repository->save_generated_file($this->file->tmp_name.'.blur');
-        $this->repository->save_generated_file($this->file->tmp_name.'.thumb');
+        $this->repository->save_generated_file($this->file->tmp_name.'.blur.png');
+        $this->repository->save_generated_file($this->file->tmp_name.'.thumb.png');
         return $this->repository->save_image($this->name, $file_path);
     }
 }
