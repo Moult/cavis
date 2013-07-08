@@ -34,7 +34,7 @@ class Submission extends Data\Image
         ));
         $this->validator->rule('name', 'not_empty');
         $this->validator->rule('name', 'max_length', 30);
-        $this->validator->rule('file', 'not_empty');
+        $this->validator->rule('file', 'upload_not_empty');
         $this->validator->rule('file', 'upload_valid');
         $this->validator->rule('file', 'upload_type', array('jpg', 'png', 'jpeg'));
         $this->validator->rule('file', 'upload_size', '1M');

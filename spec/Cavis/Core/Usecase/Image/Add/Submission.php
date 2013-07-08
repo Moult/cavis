@@ -51,7 +51,7 @@ class Submission extends ObjectBehavior
         ))->shouldBeCalled();
         $validator->rule('name', 'not_empty')->shouldBeCalled();
         $validator->rule('name', 'max_length', 30)->shouldBeCalled();
-        $validator->rule('file', 'not_empty')->shouldBeCalled();
+        $validator->rule('file', 'upload_not_empty')->shouldBeCalled();
         $validator->rule('file', 'upload_valid')->shouldBeCalled();
         $validator->rule('file', 'upload_type', array('jpg', 'png', 'jpeg'))->shouldBeCalled();
         $validator->rule('file', 'upload_size', '1M')->shouldBeCalled();
