@@ -88,15 +88,6 @@ class Submission extends ObjectBehavior
         $this->resize_to_layout();
     }
 
-    function it_can_generate_a_blurred_image_background($photoshopper)
-    {
-        $photoshopper->setup('tmp_Foo', 'tmp_Foo.blur.png')->shouldBeCalled();
-        $photoshopper->resize_to_width(978)->shouldBeCalled();
-        $photoshopper->setup('tmp_Foo.blur.png')->shouldBeCalled();
-        $photoshopper->gaussian_blur(10)->shouldBeCalled();
-        $this->generate_background();
-    }
-
     function it_generates_a_thumbnail($photoshopper)
     {
         $photoshopper->setup('tmp_Foo', 'tmp_Foo.thumb.png')->shouldBeCalled();
@@ -107,7 +98,6 @@ class Submission extends ObjectBehavior
     function it_submits_the_proposal($file, $repository)
     {
         $repository->save_file($file)->shouldBeCalled()->willReturn('/path/to/upload/file.png');
-        $repository->save_generated_file('tmp_Foo.blur.png')->shouldBeCalled();
         $repository->save_generated_file('tmp_Foo.thumb.png')->shouldBeCalled();
         $repository->save_image('Foo', '/path/to/upload/file.png')->shouldBeCalled()->willReturn(42);
         $this->submit()->shouldReturn(42);
