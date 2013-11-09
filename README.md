@@ -15,6 +15,9 @@ The following usecases are supported.
  * Comment add
  * Comment delete
  * Comment vote
+ * Category add
+ * Category delete
+ * Category edit
 
 # Development
 
