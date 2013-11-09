@@ -1,5 +1,8 @@
 {
     "name": "moult/cavis",
+    "description": "System for image voting and commenting",
+    "keywords": ["image", "vote", "comment"],
+    "license": "MIT",
     "config": {
         "bin-dir": "bin/"
     },
