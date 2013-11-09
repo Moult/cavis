@@ -11,7 +11,6 @@ class Interactor extends ObjectBehavior
      */
     function let($submission)
     {
-        $submission->supplementary_files = array('file_foo', 'file_bar');
         $this->beConstructedWith($submission);
     }
 
@@ -23,11 +22,9 @@ class Interactor extends ObjectBehavior
     function it_should_run_the_interaction_chain($submission)
     {
         $submission->validate()->shouldBeCalled();
-        $submission->validate_supplementary_files()->shouldBeCalled();
         $submission->is_wider_than_layout()->shouldBeCalled()->willReturn(TRUE);
         $submission->resize_to_layout()->shouldBeCalled();
         $submission->generate_thumbnail()->shouldBeCalled();
-        $submission->resize_supplementary_files()->shouldBeCalled();
         $submission->submit()->shouldBeCalled()->willReturn(42);
         $this->interact()->shouldReturn(42);
     }
