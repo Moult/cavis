@@ -13,4 +13,8 @@ class Image
     public $file;
     public $comments;
     public $number_of_votes;
+    /**
+     * @var Data\Category
+     */
+    public $category;
 }

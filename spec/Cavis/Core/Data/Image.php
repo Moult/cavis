@@ -35,4 +35,9 @@ class Image extends ObjectBehavior
     {
         $this->number_of_votes->shouldBe(NULL);
     }
+
+    function it_should_belong_to_a_category()
+    {
+        $this->category->shouldBe(NULL);
+    }
 }
