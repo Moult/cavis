@@ -8,5 +8,5 @@ namespace Cavis\Core\Usecase\Category\Edit;
 
 interface Repository
 {
-    public function update_category($id, $name, $parent);
+    public function update_category($id, $name, $parent_id);
 }

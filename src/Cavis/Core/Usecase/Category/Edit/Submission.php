@@ -31,12 +31,12 @@ class Submission extends Data\Category
         $this->validator->setup(array(
             'id' => $this->id,
             'name' => $this->name,
-            'parent' => $this->parent
+            'parent_id' => $this->parent->id
         ));
         $this->validator->rule('id', 'not_empty');
         $this->validator->rule('name', 'not_empty');
         $this->validator->callback('id', array($this, 'is_an_existing_category_id'), array('id'));
-        $this->validator->callback('parent', array($this, 'is_an_existing_category_id'), array('parent'));
+        $this->validator->callback('parent_id', array($this, 'is_an_existing_category_id'), array('parent_id'));
 
         if ( ! $this->validator->check())
             throw new Exception\Validation($this->validator->errors());
@@ -52,7 +52,7 @@ class Submission extends Data\Category
 
     public function update()
     {
-        $this->repository->update_category($this->id, $this->name, $this->parent);
+        $this->repository->update_category($this->id, $this->name, $this->parent->id);
     }
 
 }

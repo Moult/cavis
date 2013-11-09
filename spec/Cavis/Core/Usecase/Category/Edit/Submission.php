@@ -10,12 +10,14 @@ class Submission extends ObjectBehavior
      * @param Cavis\Core\Data\Category $category
      * @param Cavis\Core\Usecase\Category\Edit\Repository $repository
      * @param Cavis\Core\Tool\Validator $validator
+     * @param Cavis\Core\Data\Category $parent
      */
-    function let($category, $repository, $validator)
+    function let($category, $repository, $validator, $parent)
     {
+        $parent->id = 'parent_id';
         $category->id = 'id';
         $category->name = 'name';
-        $category->parent = 'parent';
+        $category->parent = $parent;
         $this->beConstructedWith($category, $repository, $validator);
     }
 
@@ -34,14 +36,14 @@ class Submission extends ObjectBehavior
         $validator->setup(array(
             'id' => 'id',
             'name' => 'name',
-            'parent' => 'parent'
+            'parent_id' => 'parent_id'
         ))->shouldBeCalled();
         $validator->rule('id', 'not_empty')->shouldBeCalled();
         $validator->rule('name', 'not_empty')->shouldBeCalled();
         $validator->callback('id', array($this, 'is_an_existing_category_id'), array('id'))->shouldBeCalled();
-        $validator->callback('parent', array($this, 'is_an_existing_category_id'), array('parent'))->shouldBeCalled();
+        $validator->callback('parent_id', array($this, 'is_an_existing_category_id'), array('parent_id'))->shouldBeCalled();
         $validator->check()->shouldBeCalled()->willReturn(FALSE);
-        $validator->errors()->shouldBeCalled()->willReturn(array('name', 'parent'));
+        $validator->errors()->shouldBeCalled()->willReturn(array('name', 'parent_id'));
         $this->shouldThrow('Cavis\Core\Exception\Validation')->duringValidate();
     }
 
@@ -59,7 +61,7 @@ class Submission extends ObjectBehavior
 
     function it_can_update_the_category($repository)
     {
-        $repository->update_category('id', 'name', 'parent')->shouldBeCalled();
+        $repository->update_category('id', 'name', 'parent_id')->shouldBeCalled();
         $this->update();
     }
 
