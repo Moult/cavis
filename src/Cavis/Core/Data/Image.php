@@ -10,6 +10,11 @@ class Image
 {
     public $id;
     public $name;
+    public $author;
+    public $website;
+    public $email;
+    public $summary;
+    public $description;
     /**
      * @var Data\File
      */
@@ -18,6 +23,10 @@ class Image
      * @var Data\File
      */
     public $file;
+    /**
+     * @var array of Data\File
+     */
+    public $supplementary_files;
     public $comments;
     public $number_of_votes;
     /**

@@ -14,7 +14,7 @@ interface Repository
     /**
      * @return int The unique id of the saved image
      */
-    public function save_image($name, $thumbnail_path, $file_path, $category_id);
+    public function save_image($name, $thumbnail_path, $file_path, $supplementary_file_paths, $category_id);
 
     /**
      * @return mixed string bool full path to uploaded file or FALSE if failed
