@@ -35,4 +35,9 @@ class File extends ObjectBehavior
     {
         $this->error_code->shouldBe(NULL);
     }
+
+    function it_should_have_a_full_path()
+    {
+        $this->full_path->shouldBe(NULL);
+    }
 }

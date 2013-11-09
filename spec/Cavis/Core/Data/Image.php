@@ -21,6 +21,11 @@ class Image extends ObjectBehavior
         $this->name->shouldBe(NULL);
     }
 
+    function it_should_have_a_thumbnail()
+    {
+        $this->thumbnail->shouldBe(NULL);
+    }
+
     function it_should_have_file_data()
     {
         $this->file->shouldBe(NULL);

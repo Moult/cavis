@@ -13,4 +13,5 @@ class File
     public $mimetype;
     public $filesize_in_bytes;
     public $error_code;
+    public $full_path;
 }

@@ -10,6 +10,13 @@ class Image
 {
     public $id;
     public $name;
+    /**
+     * @var Data\File
+     */
+    public $thumbnail;
+    /**
+     * @var Data\File
+     */
     public $file;
     public $comments;
     public $number_of_votes;

@@ -15,6 +15,7 @@ class Submission extends Data\Image
     {
         $this->name = $image->name;
         $this->file = $image->file;
+        $this->category = $image->category;
         $this->repository = $repository;
         $this->photoshopper = $photoshopper;
         $this->validator = $validator;
@@ -31,6 +32,7 @@ class Submission extends Data\Image
                 'size' => $this->file->filesize_in_bytes,
                 'error' => $this->file->error_code
             ),
+            'category_id' => $this->category->id
         ));
         $this->validator->rule('name', 'not_empty');
         $this->validator->rule('name', 'max_length', 30);
@@ -38,8 +40,14 @@ class Submission extends Data\Image
         $this->validator->rule('file', 'upload_valid');
         $this->validator->rule('file', 'upload_type', array('jpg', 'png', 'jpeg'));
         $this->validator->rule('file', 'upload_size', '1M');
+        $this->validator->callback('category_id', array($this, 'is_an_existing_category_id'), array('category_id'));
         if ( ! $this->validator->check())
             throw new Exception\Validation($this->validator->errors());
+    }
+
+    public function is_an_existing_category_id($id)
+    {
+        return $this->repository->does_category_exist($id);
     }
 
     public function is_wider_than_layout()
@@ -56,14 +64,19 @@ class Submission extends Data\Image
 
     public function generate_thumbnail()
     {
+        $this->thumbnail = new Data\File;
         $this->photoshopper->setup($this->file->tmp_name, $this->file->tmp_name.'.thumb.png');
         $this->photoshopper->resize_to_width(222);
+        $this->thumbnail->full_path = $this->file->tmp_name.'.thumb.png';
     }
 
     public function submit()
     {
-        $file_path = $this->repository->save_file($this->file);
-        $this->repository->save_generated_file($this->file->tmp_name.'.thumb.png');
-        return $this->repository->save_image($this->name, $file_path);
+        return $this->repository->save_image(
+            $this->name,
+            $this->repository->save_file($this->thumbnail),
+            $this->repository->save_file($this->file),
+            $this->category->id
+        );
     }
 }
